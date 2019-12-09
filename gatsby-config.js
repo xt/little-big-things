@@ -1,77 +1,53 @@
+require(`dotenv`).config({
+  path: `.env`
+});
+
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby + Netlify CMS Starter',
-    description:
-      'This repo contains an example business website that is built with Gatsby, and Netlify CMS.It follows the JAMstack architecture by using Git as a single source of truth, and Netlify for continuous deployment, and CDN distribution.',
+    siteTitleAlt: `Little Big Things`
   },
   plugins: [
-    'gatsby-plugin-react-helmet',
-    'gatsby-plugin-sass',
     {
-      // keep as first gatsby-source-filesystem plugin for gatsby image support
-      resolve: 'gatsby-source-filesystem',
+      resolve: `@lekoarts/gatsby-theme-emilia`,
       options: {
-        path: `${__dirname}/static/img`,
-        name: 'uploads',
-      },
+        name: "Little Big Things",
+        location: "",
+        showThemeAuthor: false,
+        socialMedia: [{ title: `Twitter`, href: `https://twitter.com/areai51` }]
+      }
     },
     {
-      resolve: 'gatsby-source-filesystem',
+      resolve: `gatsby-plugin-google-analytics`,
       options: {
-        path: `${__dirname}/src/pages`,
-        name: 'pages',
-      },
+        trackingId: process.env.GOOGLE_ANALYTICS_ID
+      }
     },
+    `gatsby-plugin-sitemap`,
     {
-      resolve: 'gatsby-source-filesystem',
+      resolve: `gatsby-plugin-manifest`,
       options: {
-        path: `${__dirname}/src/img`,
-        name: 'images',
-      },
-    },
-    'gatsby-plugin-sharp',
-    'gatsby-transformer-sharp',
-    {
-      resolve: 'gatsby-transformer-remark',
-      options: {
-        plugins: [
+        name: `Emilia - @lekoarts/gatsby-theme-emilia`,
+        short_name: `Emilia`,
+        description: `Minimalistic portfolio/photography site with masonry grid, page transitions and big images. Themeable with Theme UI.`,
+        start_url: `/`,
+        background_color: `#fff`,
+        theme_color: `#3182ce`,
+        display: `standalone`,
+        icons: [
           {
-            resolve: 'gatsby-remark-relative-images',
-            options: {
-              name: 'uploads',
-            },
+            src: `/android-chrome-192x192.png`,
+            sizes: `192x192`,
+            type: `image/png`
           },
           {
-            resolve: 'gatsby-remark-images',
-            options: {
-              // It's important to specify the maxWidth (in pixels) of
-              // the content container as this plugin uses this as the
-              // base for generating different widths of each image.
-              maxWidth: 2048,
-            },
-          },
-          {
-            resolve: 'gatsby-remark-copy-linked-files',
-            options: {
-              destinationDir: 'static',
-            },
-          },
-        ],
-      },
+            src: `/android-chrome-512x512.png`,
+            sizes: `512x512`,
+            type: `image/png`
+          }
+        ]
+      }
     },
-    {
-      resolve: 'gatsby-plugin-netlify-cms',
-      options: {
-        modulePath: `${__dirname}/src/cms/cms.js`,
-      },
-    },
-    {
-      resolve: 'gatsby-plugin-purgecss', // purges all unused/unreferenced css rules
-      options: {
-        develop: true, // Activates purging in npm run develop
-        purgeOnly: ['/all.sass'], // applies purging only on the bulma css file
-      },
-    }, // must be after other CSS plugins
-    'gatsby-plugin-netlify', // make sure to keep it last in the array
-  ],
-}
+    `gatsby-plugin-offline`,
+    `gatsby-plugin-netlify`
+  ]
+};
